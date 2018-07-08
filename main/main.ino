@@ -27,9 +27,6 @@ void setup() {
 
 void loop() {
   // is configuration portal requested?
-  temp = digitalRead(TRIGGER_PIN);
-  Serial.println(temp);
-  Serial.println("Loop");
   if ( digitalRead(TRIGGER_PIN) == HIGH ) {
     digitalWrite(RED_LED,HIGH);
     Serial.println("Reset");
