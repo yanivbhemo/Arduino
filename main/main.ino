@@ -65,11 +65,12 @@ void loop() {
     Serial.print("NodeMCU IP Address : ");
     Serial.println(WiFi.localIP() );
     digitalWrite(RED_LED,LOW);
+    flagForEmail = 0;
   }
 
 
   // put your main code here, to run repeatedly:
- 
+  delay(3000);
   if(flagForEmail == 0) {
               //Email Section
                Gsender *gsender = Gsender::Instance();    // Getting pointer to class instance
