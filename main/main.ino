@@ -8,22 +8,23 @@
 // select wich pin will trigger the configuraton portal when set to LOW
 // ESP-01 users please note: the only pins available (0 and 2), are shared 
 // with the bootloader, so always set them HIGH at power-up
-#define TRIGGER_PIN 0
-
+#define TRIGGER_PIN 16
+#define RED_LED 15
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   Serial.println("Starting");
   Serial.println("Starting");
-
+  pinMode(RED_LED, OUTPUT);
   pinMode(TRIGGER_PIN, INPUT);
 }
 
 
 void loop() {
   // is configuration portal requested?
-  if ( digitalRead(TRIGGER_PIN) == LOW ) {
+  if ( digitalRead(TRIGGER_PIN) == HIGH ) {
+    digitalWrite(RED_LED,HIGH);
     Serial.println("Reset");
     //WiFiManager
     //Local intialization. Once its business is done, there is no need to keep it around
