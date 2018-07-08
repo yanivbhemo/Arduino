@@ -11,18 +11,25 @@
 #define TRIGGER_PIN 16
 #define RED_LED 15
 
+int temp = 0;
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   Serial.println("Starting");
   Serial.println("Starting");
+  
   pinMode(RED_LED, OUTPUT);
+  digitalWrite(RED_LED,LOW);
   pinMode(TRIGGER_PIN, INPUT);
 }
 
 
 void loop() {
   // is configuration portal requested?
+  temp = digitalRead(TRIGGER_PIN);
+  Serial.println(temp);
+  Serial.println("Loop");
   if ( digitalRead(TRIGGER_PIN) == HIGH ) {
     digitalWrite(RED_LED,HIGH);
     Serial.println("Reset");
@@ -62,5 +69,5 @@ void loop() {
 
 
   // put your main code here, to run repeatedly:
-
+  digitalWrite(RED_LED,LOW);
 }
