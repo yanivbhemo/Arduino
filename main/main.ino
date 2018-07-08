@@ -13,7 +13,7 @@
 #define RED_LED 15
 
 int temp = 0;
-int flagForEmail = 2; //Flag to make sure mail is only send once.
+int flagForEmail = 2; //Flag to make sure mail is only send once. 0=send, 2=don't send
 
 void setup() {
   // put your setup code here, to run once:
@@ -35,7 +35,7 @@ void loop() {
     //WiFiManager
     //Local intialization. Once its business is done, there is no need to keep it around
     WiFiManager wifiManager;
-    wifiManager.autoConnect("Yaniv");
+    wifiManager.autoConnect("Noleak_001");
     //reset settings - for testing
     //wifiManager.resetSettings();
 
@@ -47,11 +47,8 @@ void loop() {
     //it starts an access point with the specified name
     //here  "AutoConnectAP"
     //and goes into a blocking loop awaiting configuration
-
-    //WITHOUT THIS THE AP DOES NOT SEEM TO WORK PROPERLY WITH SDK 1.5 , update to at least 1.5.1
-    //WiFi.mode(WIFI_STA);
     
-    if (!wifiManager.startConfigPortal("Yaniv")) {
+    if (!wifiManager.startConfigPortal("Noleak")) {
       Serial.println("failed to connect and hit timeout");
       delay(3000);
       //reset and try again, or maybe put it to deep sleep
@@ -80,6 +77,6 @@ void loop() {
                     Serial.print("Error sending message: ");
                     Serial.println(gsender->getError());
                 }
-                flagForEmail = flagForEmail + 1;
+                flagForEmail = 2;
             }
 }
