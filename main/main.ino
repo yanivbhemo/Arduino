@@ -13,7 +13,7 @@
 #define RED_LED 15
 
 int temp = 0;
-int flagForEmail = 0;
+int flagForEmail = 2; //Flag to make sure mail is only send once.
 
 void setup() {
   // put your setup code here, to run once:
@@ -68,9 +68,8 @@ void loop() {
     flagForEmail = 0;
   }
 
-
   // put your main code here, to run repeatedly:
-  delay(3000);
+  
   if(flagForEmail == 0) {
               //Email Section
                Gsender *gsender = Gsender::Instance();    // Getting pointer to class instance
