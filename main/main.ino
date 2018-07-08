@@ -9,11 +9,18 @@
 // select wich pin will trigger the configuraton portal when set to LOW
 // ESP-01 users please note: the only pins available (0 and 2), are shared 
 // with the bootloader, so always set them HIGH at power-up
-#define TRIGGER_PIN 16
+#define TRIGGER_PIN 4
 #define RED_LED 15
+#define SENSOR_PIN 0 // sensor input at Analog pin D4
+#define YELLOW_LED 12 //Indicator led
+#define INTERNAL_LED 16 //On-board red led light
 
 int temp = 0;
 int flagForEmail = 2; //Flag to make sure mail is only send once. 0=send, 2=don't send
+int value = 0; //Value from moisture sensor
+//The equation for getting precentage
+int max_dry = 360; //This is our 100%
+int moist_precent = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -22,8 +29,11 @@ void setup() {
   Serial.println("Starting");
   
   pinMode(RED_LED, OUTPUT);
-  digitalWrite(RED_LED,LOW);
+  pinMode(YELLOW_LED, OUTPUT);
   pinMode(TRIGGER_PIN, INPUT);
+  
+  digitalWrite(RED_LED,LOW);
+  digitalWrite(YELLOW_LED,LOW);  
 }
 
 
@@ -66,6 +76,11 @@ void loop() {
   }
 
   // put your main code here, to run repeatedly:
+
+   Serial.print("MOISTURE LEVEL : ");
+   value=analogRead(SENSOR_PIN);
+   moist_precent = (value * 100) / max_dry;
+   Serial.println(moist_precent + "%");
   
   if(flagForEmail == 0) {
               //Email Section
@@ -78,5 +93,5 @@ void loop() {
                     Serial.println(gsender->getError());
                 }
                 flagForEmail = 2;
-            }
+    }
 }
