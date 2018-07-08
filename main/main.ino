@@ -4,6 +4,7 @@
 #include <ESP8266WebServer.h>
 #include <DNSServer.h>
 #include <WiFiManager.h>          //https://github.com/tzapu/WiFiManager
+#include "Gsender.h"
 
 // select wich pin will trigger the configuraton portal when set to LOW
 // ESP-01 users please note: the only pins available (0 and 2), are shared 
@@ -12,6 +13,7 @@
 #define RED_LED 15
 
 int temp = 0;
+int flagForEmail = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -62,9 +64,22 @@ void loop() {
     Serial.println("Wifi Connected Success!");
     Serial.print("NodeMCU IP Address : ");
     Serial.println(WiFi.localIP() );
+    digitalWrite(RED_LED,LOW);
   }
 
 
   // put your main code here, to run repeatedly:
-  digitalWrite(RED_LED,LOW);
+ 
+  if(flagForEmail == 0) {
+              //Email Section
+               Gsender *gsender = Gsender::Instance();    // Getting pointer to class instance
+               String subject = "Alert! Water Leakage under tiles at Amnon's smart home";
+               if(gsender->Subject(subject)->Send("yanivben3@gmail.com", "<h1><font color='red'>Please Be Advised!</font></h1><h2>There is a water leakage under your tiles.<br>Please fix it quickly.</h2>")) {
+                    Serial.println("Message send.");
+                } else {
+                    Serial.print("Error sending message: ");
+                    Serial.println(gsender->getError());
+                }
+                flagForEmail = flagForEmail + 1;
+            }
 }
