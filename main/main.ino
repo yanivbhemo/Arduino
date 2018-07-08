@@ -16,7 +16,7 @@
 #define INTERNAL_LED 16 //On-board red led light
 
 int temp = 0;
-int flagForEmail = 2; //Flag to make sure mail is only send once. 0=send, 2=don't send
+int flagForEmail = 0; //Flag to make sure mail is only send once. 0=send, 2=don't send
 int value = 0; //Value from moisture sensor
 //The equation for getting precentage
 int max_dry = 360; //This is our 100%
@@ -76,17 +76,22 @@ void loop() {
   }
 
   // put your main code here, to run repeatedly:
-
+   delay(3000);
    Serial.print("MOISTURE LEVEL : ");
    value=analogRead(SENSOR_PIN);
-   moist_precent = (value * 100) / max_dry;
-   Serial.println(moist_precent + "%");
+   Serial.print(value);
+   Serial.print("   ");
+   moist_precent = (max_dry - value) * 100 / max_dry;
+   Serial.print(moist_precent);
+   Serial.println("%");
   
   if(flagForEmail == 0) {
+              String email_msg="<html><body>test " + (int)value;
+              email_msg += "</body></html>";
               //Email Section
                Gsender *gsender = Gsender::Instance();    // Getting pointer to class instance
-               String subject = "Alert! Water Leakage under tiles at Amnon's smart home";
-               if(gsender->Subject(subject)->Send("yanivben3@gmail.com", "<h1><font color='red'>Please Be Advised!</font></h1><h2>There is a water leakage under your tiles.<br>Please fix it quickly.</h2>")) {
+               String subject = "Alert! Water Leakage under tiles";
+               if(gsender->Subject(subject)->Send("yanivben3@gmail.com", (String)email_msg)) {
                     Serial.println("Message send.");
                 } else {
                     Serial.print("Error sending message: ");
