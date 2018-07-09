@@ -6,7 +6,7 @@
 #include <WiFiManager.h>          //https://github.com/tzapu/WiFiManager
 #include "Gsender.h"
 
-// select wich pin will trigger the configuraton portal when set to LOW
+// select which pin will trigger the configuraton portal when set to LOW
 // ESP-01 users please note: the only pins available (0 and 2), are shared 
 // with the bootloader, so always set them HIGH at power-up
 #define TRIGGER_PIN 4
@@ -57,6 +57,9 @@ void loop() {
     //it starts an access point with the specified name
     //here  "AutoConnectAP"
     //and goes into a blocking loop awaiting configuration
+
+    WiFiManagerParameter custom_text("<p>This is just a text paragraph</p>");
+    wifiManager.addParameter(&custom_text);
     
     if (!wifiManager.startConfigPortal("Noleak")) {
       Serial.println("failed to connect and hit timeout");
@@ -91,7 +94,7 @@ void loop() {
               //Email Section
                Gsender *gsender = Gsender::Instance();    // Getting pointer to class instance
                String subject = "Alert! Water Leakage under tiles";
-               if(gsender->Subject(subject)->Send("yanivben3@gmail.com", (String)email_msg)) {
+               if(gsender->Subject(subject)->Send("yanivben3@gmail.com", email_msg) {
                     Serial.println("Message send.");
                 } else {
                     Serial.print("Error sending message: ");
